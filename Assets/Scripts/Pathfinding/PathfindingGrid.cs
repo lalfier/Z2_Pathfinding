@@ -46,6 +46,26 @@ public class PathfindingGrid : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Get grid node object from world position.
+    /// </summary>
+    /// <param name="worldPos">World position.</param>
+    /// <returns>Returns grid node object.</returns>
+    public GridNode GetNodeFromPosition(Vector3 worldPos)
+    {
+        // If far left/down percent is 0, if far right/up percent is 1
+        float percentX = worldPos.x / gridSize.x + 0.5f;
+        float percentY = worldPos.y / gridSize.y + 0.5f;
+        // Clamp it between 0 and 1
+        percentX = Mathf.Clamp01(percentX);
+        percentY = Mathf.Clamp01(percentY);
+
+        // Calculate index x and y to locate node in a grid array
+        int x = Mathf.FloorToInt(Mathf.Min(nodesInRowX * percentX, nodesInRowX - 1));
+        int y = Mathf.FloorToInt(Mathf.Min(nodesInColumnY * percentY, nodesInColumnY - 1));
+        return grid[x, y];
+    }
+
     private void OnDrawGizmos()
     {
         // Draw grid bounding box
