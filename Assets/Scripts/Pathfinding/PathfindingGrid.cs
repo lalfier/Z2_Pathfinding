@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PathfindingGrid : MonoBehaviour
 {
-    [Tooltip("Draw gizmos for grid in editor?")]
-    public bool showGridGizmos = true;
+    [Tooltip("Draw only gizmos for path visualization")]
+    public bool onlyDrawPathGizmos = true;
     [Tooltip("Size of a grid (x, y)")]
     public Vector2 gridSize;
     [Tooltip("Size of a grid node (grid unit)")]
@@ -41,7 +42,7 @@ public class PathfindingGrid : MonoBehaviour
                 bool isObstacle = Physics2D.OverlapCircle(worldPoint, (nodeSize/2 - 0.025f), obstacleLayerMask);
 
                 // Create grid node object
-                grid[x, y] = new GridNode(isObstacle, worldPoint);
+                grid[x, y] = new GridNode(isObstacle, worldPoint, x, y);
             }
         }
     }
@@ -66,25 +67,78 @@ public class PathfindingGrid : MonoBehaviour
         return grid[x, y];
     }
 
+    /// <summary>
+    /// Get list of neighbor grid nodes.
+    /// </summary>
+    /// <param name="node">Grid node that looks for neighbors.</param>
+    /// <returns>Returns list of neighbor grid nodes.</returns>
+    public List<GridNode> GetNeighborNodes(GridNode node)
+    {
+        List<GridNode> neighbors = new List<GridNode>();
+        // Get 3x3 neighbor nodes
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                // This is central node so skip it
+                if(x == 0 && y == 0)
+                {
+                    continue;
+                }
+
+                int checkX = node.GridPosX + x;
+                int checkY = node.GridPosY + y;
+                // If node is inside grid add it to the list
+                if(checkX >= 0 && checkX < nodesInRowX && checkY >= 0 && checkY < nodesInColumnY)
+                {
+                    neighbors.Add(grid[checkX, checkY]);
+                }
+            }
+        }
+        return neighbors;
+    }
+
+    public List<GridNode> path; // For path visualization
     private void OnDrawGizmos()
     {
         // Draw grid bounding box
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.cyan;
         Gizmos.DrawWireCube(transform.position, gridSize);
 
-        if (grid != null && showGridGizmos)
+        if (onlyDrawPathGizmos) // Draw only path
         {
-            // Draw every grid node white, if node is clear, or red, if node is obstacle
-            foreach (GridNode gNode in grid)
+            if (path != null)
             {
-                Gizmos.color = Color.white;
-                if (gNode.IsObstacle)
+                foreach (GridNode gNode in path)
                 {
-                    Gizmos.color = Color.red;
-                }                    
-
-                Gizmos.DrawCube(gNode.WorldPosition, Vector2.one * (nodeSize - 0.1f));  // Draw grid a bit smaller for visibility
+                    Gizmos.color = Color.magenta;
+                    Gizmos.DrawCube(gNode.WorldPosition, Vector2.one * (nodeSize - 0.1f));  // Draw path a bit smaller for visibility
+                }
             }
         }
+        else
+        {
+            if (grid != null)
+            {
+                // Color every grid node white, if node is clear, or red, if node is obstacle
+                foreach (GridNode gNode in grid)
+                {
+                    Gizmos.color = Color.white;
+                    if (gNode.IsObstacle)
+                    {
+                        Gizmos.color = Color.red;
+                    }
+                    // Color path
+                    if (path != null)
+                    {
+                        if (path.Contains(gNode))
+                        {
+                            Gizmos.color = Color.magenta;
+                        }
+                    }
+                    Gizmos.DrawCube(gNode.WorldPosition, Vector2.one * (nodeSize - 0.1f));  // Draw grid a bit smaller for visibility
+                }
+            }
+        }        
     }
 }

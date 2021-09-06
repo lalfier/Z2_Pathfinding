@@ -1420,6 +1420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 677543183}
   - component: {fileID: 677543182}
+  - component: {fileID: 677543184}
   m_Layer: 0
   m_Name: PathfindingA*
   m_TagString: Untagged
@@ -1457,8 +1458,22 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &677543184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677543181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 141cbec9d55bd7b49a617f4d6896267c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPoint: {fileID: 1177566044}
+  endPoint: {fileID: 1981651170}
 --- !u!1001 &678559397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1992,7 +2007,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956519651}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2038,8 +2053,8 @@ Transform:
   - {fileID: 1362795654}
   - {fileID: 1771421480}
   - {fileID: 306926402}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1706827183}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &993504210
 PrefabInstance:
@@ -2292,7 +2307,7 @@ Transform:
   m_Children:
   - {fileID: 1998691455}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1219923550
 PrefabInstance:
@@ -2470,12 +2485,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244590041}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 1706827183}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1324003416
 PrefabInstance:
@@ -3177,6 +3192,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 453217126700061113, guid: 86185e5b70c1a1c4290945cd24ed689e, type: 3}
   m_PrefabInstance: {fileID: 1682081454}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1706827182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1706827183}
+  m_Layer: 0
+  m_Name: Labyrinth
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1706827183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706827182}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1244590044}
+  - {fileID: 956519652}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1716964366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3650,7 +3697,7 @@ Transform:
   m_Children:
   - {fileID: 1439776385}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1995120988
 GameObject:
@@ -3686,8 +3733,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 134.6, y: 555}
-  m_SizeDelta: {x: 260, y: 50}
+  m_AnchoredPosition: {x: 134.6, y: 541.3}
+  m_SizeDelta: {x: 260, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1995120990
 MonoBehaviour:
@@ -3724,7 +3771,11 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Left Mouse - Set start position.
 
-    Right Mouse - Set end position.'
+    Right Mouse - Set end position.
+
+
+    Enable
+    Gizmos to see path.'
 --- !u!222 &1995120991
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3826,7 +3877,7 @@ GameObject:
   - component: {fileID: 2008064875}
   - component: {fileID: 2008064874}
   m_Layer: 0
-  m_Name: MouseClickPosition
+  m_Name: InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
