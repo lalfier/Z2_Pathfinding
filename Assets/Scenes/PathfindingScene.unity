@@ -2318,6 +2318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a126c2c7c70bd41b3dd164b38ca4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  returnAllWaypoints: 1
   target: {fileID: 1981651170}
 --- !u!4 &1177566044
 Transform:
@@ -3247,7 +3248,7 @@ Transform:
   - {fileID: 1244590044}
   - {fileID: 956519652}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1716964366
 PrefabInstance:
@@ -3937,7 +3938,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2025894684
 PrefabInstance:

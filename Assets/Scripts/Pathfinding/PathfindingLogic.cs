@@ -1,15 +1,20 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+//using System.Diagnostics;
 
 [RequireComponent(typeof(PathfindingGrid))]
 public class PathfindingLogic : MonoBehaviour
 {
     private PathfindingGrid grid;   // Grid reference
+    private HeapMin openSet;    // HeapMin of nodes that needs to be checked
+    private HashSet<GridNode> closedSet;    // HashSet of nodes already checked
 
     private void Awake()
     {
         grid = GetComponent<PathfindingGrid>();
+        openSet = new HeapMin(grid.NumberOfGridNodes);
+        closedSet = new HashSet<GridNode>();
     }
 
     /// <summary>
@@ -21,12 +26,17 @@ public class PathfindingLogic : MonoBehaviour
     /// <returns>Returns array of path waypoints (world position).</returns>
     public Vector3[] CalculatePath(Vector3 startPos, Vector3 endPos, bool returnAllWaypoints)
     {
+        // Start debug diagnostics
+        //Stopwatch sw = new Stopwatch();
+        //sw.Start();
+
         // Get grid node from position
         GridNode startNode = grid.GetNodeFromPosition(startPos);
         GridNode endNode = grid.GetNodeFromPosition(endPos);
 
-        List<GridNode> openSet = new List<GridNode>();  // Set of nodes that needs to be checked
-        HashSet<GridNode> closedSet = new HashSet<GridNode>();  // HashSet of nodes already checked
+        openSet.Clear();    // Empty HeapMin before calculation
+        closedSet.Clear();  // Empty HashSet before calculation
+
         // Add start node to open set
         openSet.Add(startNode);
 
@@ -34,21 +44,16 @@ public class PathfindingLogic : MonoBehaviour
         while (openSet.Count > 0)
         {
             // Set current node as lowest FScore node in open set
-            GridNode currentNode = openSet[0];
-            for (int i = 0; i < openSet.Count; i++)
-            {
-                if(openSet[i].FScore < currentNode.FScore || (openSet[i].FScore == currentNode.FScore && openSet[i].HScore < currentNode.HScore))
-                {
-                    currentNode = openSet[i];
-                }
-            }
-
-            openSet.Remove(currentNode);    // Remove current node from open set
+            GridNode currentNode = openSet.RemoveFirst();
             closedSet.Add(currentNode);     // Add current node in closed HashSet
 
             // If current node is end node, algorithm is finished and path is found, success
             if (currentNode == endNode)
-            {                
+            {
+                // Stop debug diagnostics
+                //sw.Stop();
+                //UnityEngine.Debug.Log("Success! Path found in: " + sw.ElapsedMilliseconds + " ms");
+
                 return ReconstructPath(startNode, endNode, returnAllWaypoints);
             }
 
@@ -73,6 +78,10 @@ public class PathfindingLogic : MonoBehaviour
                     if (!openSet.Contains(neighbor))
                     {
                         openSet.Add(neighbor);
+                    }
+                    else
+                    {
+                        openSet.UpdateNode(neighbor);
                     }
                 }
             }

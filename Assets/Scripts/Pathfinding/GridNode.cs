@@ -10,6 +10,7 @@ public class GridNode
     public int HScore { get; set; }     // Get and set the score of the path from the next node to end node
     public int FScore { get { return GScore + HScore; } }   // Get the score of the path (g + h)
     public GridNode Parent { get; set; }   // Get and set the parent of grid node
+    public int HeapIndex { get; set; }      // Get and set the heap data index (HeapMin)
 
     /// <summary>
     /// Constructor for grid node object.
@@ -24,5 +25,20 @@ public class GridNode
         WorldPosition = worldPosition;
         GridPosX = gridPosX;
         GridPosY = gridPosY;
+    }
+
+    /// <summary>
+    /// Compare two grid nodes to see which one has lower score.
+    /// </summary>
+    /// <param name="nodeToCompare">Grid node to compare with.</param>
+    /// <returns>Returns 1 if smaller score, or -1 if bigger score.</returns>
+    public int CompareTo(GridNode nodeToCompare)
+    {
+        int result = FScore.CompareTo(nodeToCompare.FScore);
+        if(result == 0)
+        {
+            result = HScore.CompareTo(nodeToCompare.HScore);
+        }
+        return -result;
     }
 }

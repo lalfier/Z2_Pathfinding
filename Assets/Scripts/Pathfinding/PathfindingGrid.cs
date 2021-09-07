@@ -15,6 +15,8 @@ public class PathfindingGrid : MonoBehaviour
     private GridNode[,] grid;   // Two dimensional matrix of nodes that represents the grid
     private int nodesInRowX, nodesInColumnY;    // Number of gird nodes in row/column
 
+    public int NumberOfGridNodes { get { return nodesInRowX * nodesInColumnY; } }   // Get number of grid nodes inside grid
+
     private void Awake()
     {
         // Get number of nodes in row/column
