@@ -4,9 +4,9 @@ public class MouseClickPosition : MonoBehaviour
 {
     [Tooltip("Layer mask registered by mouse click")]
     public LayerMask clickLayerMask;
-    [Tooltip("Game object representing start")]
+    [Tooltip("Game object representing npc/start point")]
     public Transform startPoint;
-    [Tooltip("Game object representing end")]
+    [Tooltip("Game object representing target/end point")]
     public Transform endPoint;
 
     private void Update()
@@ -35,6 +35,9 @@ public class MouseClickPosition : MonoBehaviour
             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
                 gameObj.position = hit.point;
+
+                // Update npc path waypoints on position change
+                startPoint.GetComponent<NpcController>().UpdatePathWaypoints();
             }
         }
     }

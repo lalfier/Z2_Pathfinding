@@ -1421,6 +1421,7 @@ GameObject:
   - component: {fileID: 677543183}
   - component: {fileID: 677543182}
   - component: {fileID: 677543184}
+  - component: {fileID: 677543185}
   m_Layer: 0
   m_Name: PathfindingA*
   m_TagString: Untagged
@@ -1440,7 +1441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4df034eaac3e42e459a14e2e11c25f87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showGridGizmos: 1
+  drawGridGizmos: 0
   gridSize: {x: 100, y: 100}
   nodeSize: 1
   obstacleLayerMask:
@@ -1472,8 +1473,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141cbec9d55bd7b49a617f4d6896267c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPoint: {fileID: 1177566044}
-  endPoint: {fileID: 1981651170}
+--- !u!114 &677543185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677543181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436143c7a659a8b4b955ec9099f75495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &678559397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2287,13 +2298,27 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1177566044}
+  - component: {fileID: 1177566043}
   m_Layer: 0
-  m_Name: StartPoint
+  m_Name: StartPoint(Npc)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1177566043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177566042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a126c2c7c70bd41b3dd164b38ca4fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1981651170}
 --- !u!4 &1177566044
 Transform:
   m_ObjectHideFlags: 0
@@ -3678,7 +3703,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1981651170}
   m_Layer: 0
-  m_Name: EndPoint
+  m_Name: EndPoint(Target)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

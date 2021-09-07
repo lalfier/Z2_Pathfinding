@@ -4,7 +4,7 @@ using UnityEngine;
 public class PathfindingGrid : MonoBehaviour
 {
     [Tooltip("Draw only gizmos for path visualization")]
-    public bool onlyDrawPathGizmos = true;
+    public bool drawGridGizmos = false;
     [Tooltip("Size of a grid (x, y)")]
     public Vector2 gridSize;
     [Tooltip("Size of a grid node (grid unit)")]
@@ -98,47 +98,24 @@ public class PathfindingGrid : MonoBehaviour
         return neighbors;
     }
 
-    public List<GridNode> path; // For path visualization
     private void OnDrawGizmos()
     {
         // Draw grid bounding box
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireCube(transform.position, gridSize);
 
-        if (onlyDrawPathGizmos) // Draw only path
+        if (grid != null && drawGridGizmos)
         {
-            if (path != null)
+            // Color every grid node white, if node is clear, or red, if node is obstacle
+            foreach (GridNode gNode in grid)
             {
-                foreach (GridNode gNode in path)
+                Gizmos.color = Color.white;
+                if (gNode.IsObstacle)
                 {
-                    Gizmos.color = Color.magenta;
-                    Gizmos.DrawCube(gNode.WorldPosition, Vector2.one * (nodeSize - 0.1f));  // Draw path a bit smaller for visibility
+                    Gizmos.color = Color.red;
                 }
+                Gizmos.DrawCube(gNode.WorldPosition, Vector2.one * (nodeSize - 0.1f));  // Draw grid a bit smaller for visibility
             }
-        }
-        else
-        {
-            if (grid != null)
-            {
-                // Color every grid node white, if node is clear, or red, if node is obstacle
-                foreach (GridNode gNode in grid)
-                {
-                    Gizmos.color = Color.white;
-                    if (gNode.IsObstacle)
-                    {
-                        Gizmos.color = Color.red;
-                    }
-                    // Color path
-                    if (path != null)
-                    {
-                        if (path.Contains(gNode))
-                        {
-                            Gizmos.color = Color.magenta;
-                        }
-                    }
-                    Gizmos.DrawCube(gNode.WorldPosition, Vector2.one * (nodeSize - 0.1f));  // Draw grid a bit smaller for visibility
-                }
-            }
-        }        
+        }      
     }
 }

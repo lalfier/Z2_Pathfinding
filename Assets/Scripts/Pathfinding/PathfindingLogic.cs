@@ -1,14 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PathfindingGrid))]
 public class PathfindingLogic : MonoBehaviour
 {
-    [Tooltip("Game object representing start")]
-    public Transform startPoint;
-    [Tooltip("Game object representing end")]
-    public Transform endPoint;
-
     private PathfindingGrid grid;   // Grid reference
 
     private void Awake()
@@ -16,12 +12,14 @@ public class PathfindingLogic : MonoBehaviour
         grid = GetComponent<PathfindingGrid>();
     }
 
-    private void Update()
-    {
-        CalculatePath(startPoint.position, endPoint.position);
-    }
-
-    private void CalculatePath(Vector3 startPos, Vector3 endPos)
+    /// <summary>
+    /// Calculates the path from start to end position using A* pathfinding algorithm.
+    /// </summary>
+    /// <param name="startPos">Start world position.</param>
+    /// <param name="endPos">End world position.</param>
+    /// <param name="returnAllWaypoints">Return all waypoints from path calculations or ones with direction change.</param>
+    /// <returns>Returns array of path waypoints (world position).</returns>
+    public Vector3[] CalculatePath(Vector3 startPos, Vector3 endPos, bool returnAllWaypoints)
     {
         // Get grid node from position
         GridNode startNode = grid.GetNodeFromPosition(startPos);
@@ -48,11 +46,10 @@ public class PathfindingLogic : MonoBehaviour
             openSet.Remove(currentNode);    // Remove current node from open set
             closedSet.Add(currentNode);     // Add current node in closed HashSet
 
-            // If current node is end node, algorithm is finished and path is found
+            // If current node is end node, algorithm is finished and path is found, success
             if (currentNode == endNode)
-            {
-                ReconstructPath(startNode, endNode);
-                return;
+            {                
+                return ReconstructPath(startNode, endNode, returnAllWaypoints);
             }
 
             // Check all neighbors around current node
@@ -80,6 +77,8 @@ public class PathfindingLogic : MonoBehaviour
                 }
             }
         }
+        // Open set is empty but end node was never reached, failure
+        return null;
     }
 
     private int GetNodeDistance(GridNode startNode, GridNode endNode)
@@ -96,7 +95,7 @@ public class PathfindingLogic : MonoBehaviour
         return (14 * disX + 10 * (disY - disX));
     }
 
-    private void ReconstructPath (GridNode startNode, GridNode endNode)
+    private Vector3[] ReconstructPath (GridNode startNode, GridNode endNode, bool returnAllWaypoints)
     {
         // Create path from end to start node
         List<GridNode> path = new List<GridNode>();
@@ -107,7 +106,36 @@ public class PathfindingLogic : MonoBehaviour
             path.Add(currentNode);
             currentNode = currentNode.Parent;
         }
-        path.Reverse(); // Reorder list so it is from start to end node
-        grid.path = path;   // Populate path in grid for visualization
+        // Get waypoints(world position) from path
+        Vector3[] waypoints = GetWaypoints(path, returnAllWaypoints);
+        Array.Reverse(waypoints);   // Reorder list so it is from start to end node
+        return waypoints;
+    }
+
+    private Vector3[] GetWaypoints(List<GridNode> path, bool returnAllWaypoints)
+    {
+        List<Vector3> waypoints = new List<Vector3>();
+        Vector2 previousDir = Vector2.zero;
+        
+        for (int i = 1; i < path.Count; i++)
+        {
+            if (returnAllWaypoints)
+            {
+                // Get world position from all path nodes
+                waypoints.Add(path[i].WorldPosition);
+            }
+            else
+            {
+                // If there is change in direction record waypoint world position
+                Vector2 nextDir = new Vector2((path[i - 1].GridPosX - path[i].GridPosX), (path[i - 1].GridPosY - path[i].GridPosY));
+                if (nextDir != previousDir)
+                {
+                    waypoints.Add(path[i].WorldPosition);
+                }
+                previousDir = nextDir;
+            }
+        }
+
+        return waypoints.ToArray();
     }
 }
