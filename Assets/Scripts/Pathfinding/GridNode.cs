@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GridNode
+public class GridNode : IHeapObject<GridNode>
 {
     public bool IsObstacle { get;  set; }   // Get and set is grid node an obstacle
     public Vector3 WorldPosition { get; set; }  // Get and set world position for a grid node
@@ -10,7 +10,7 @@ public class GridNode
     public int HScore { get; set; }     // Get and set the score of the path from the next node to end node
     public int FScore { get { return GScore + HScore; } }   // Get the score of the path (g + h)
     public GridNode Parent { get; set; }   // Get and set the parent of grid node
-    public int HeapIndex { get; set; }      // Get and set the heap data index (HeapMin)
+    public int HeapIndex { get; set; }  // Get and set the heap data index (IHeapObject)
 
     /// <summary>
     /// Constructor for grid node object.
@@ -28,16 +28,16 @@ public class GridNode
     }
 
     /// <summary>
-    /// Compare two grid nodes to see which one has lower score.
+    /// Compare two grid nodes to see which one has lower score (IHeapObject).
     /// </summary>
-    /// <param name="nodeToCompare">Grid node to compare with.</param>
+    /// <param name="objectToCompare">Grid node to compare with.</param>
     /// <returns>Returns 1 if smaller score, or -1 if bigger score.</returns>
-    public int CompareTo(GridNode nodeToCompare)
+    public int CompareTo(GridNode objectToCompare)
     {
-        int result = FScore.CompareTo(nodeToCompare.FScore);
+        int result = FScore.CompareTo(objectToCompare.FScore);
         if(result == 0)
         {
-            result = HScore.CompareTo(nodeToCompare.HScore);
+            result = HScore.CompareTo(objectToCompare.HScore);
         }
         return -result;
     }

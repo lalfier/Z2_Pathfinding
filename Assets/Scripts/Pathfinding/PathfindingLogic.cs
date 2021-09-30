@@ -7,13 +7,13 @@ using UnityEngine;
 public class PathfindingLogic : MonoBehaviour
 {
     private PathfindingGrid grid;   // Grid reference
-    private HeapMin openSet;    // HeapMin of nodes that needs to be checked
+    private HeapMin<GridNode> openSet;  // HeapMin of nodes that needs to be checked
     private HashSet<GridNode> closedSet;    // HashSet of nodes already checked
 
     private void Awake()
     {
         grid = GetComponent<PathfindingGrid>();
-        openSet = new HeapMin(grid.NumberOfGridNodes);
+        openSet = new HeapMin<GridNode>(grid.NumberOfGridNodes);
         closedSet = new HashSet<GridNode>();
     }
 
@@ -81,7 +81,7 @@ public class PathfindingLogic : MonoBehaviour
                     }
                     else
                     {
-                        openSet.UpdateNode(neighbor);
+                        openSet.UpdateObject(neighbor);
                     }
                 }
             }

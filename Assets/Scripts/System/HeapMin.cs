@@ -1,132 +1,132 @@
 
-public class HeapMin
+public class HeapMin<T> where T : class, IHeapObject<T>
 {
-    private GridNode[] nodes;   // Array of all nodes inside grid
-    private int nodeCount;  // Number of open grid nodes inside array
+    private T[] objects;   // Array of all objects
+    private int objectCount;  // Number of open objects inside array
 
-    public int Count { get { return nodeCount; } }  // Get number of open grid nodes inside array
+    public int Count { get { return objectCount; } }  // Get number of open objects inside array
 
     /// <summary>
     /// Constructor for heap min object.
     /// </summary>
-    /// <param name="maxSize">Number of all nodes inside grid.</param>
+    /// <param name="maxSize">Number of all objects.</param>
     public HeapMin(int maxSize)
     {
-        nodes = new GridNode[maxSize];
+        objects = new T[maxSize];
     }
 
     /// <summary>
-    /// Adds open grid node to the array and sort it up.
+    /// Adds open object to the array and sort it up.
     /// </summary>
-    /// <param name="node">Grid node to add.</param>
-    public void Add(GridNode node)
+    /// <param name="hObject">Object to add.</param>
+    public void Add(T hObject)
     {
-        // Add new node as last and sort it up
-        node.HeapIndex = nodeCount;
-        nodes[nodeCount] = node;
-        SortUp(node);
-        nodeCount++;
+        // Add new object as last and sort it up
+        hObject.HeapIndex = objectCount;
+        objects[objectCount] = hObject;
+        SortUp(hObject);
+        objectCount++;
     }
 
     /// <summary>
-    /// Removes first node from the array and sort it down.
+    /// Removes first object from the array and sort it down.
     /// </summary>
-    /// <returns>Returns removed grid node.</returns>
-    public GridNode RemoveFirst()
+    /// <returns>Returns removed object.</returns>
+    public T RemoveFirst()
     {
-        // Get first node
-        GridNode firstNode = nodes[0];        
-        nodeCount--;
-        // Set new first node as last and sort it down
-        nodes[0] = nodes[nodeCount];
-        nodes[0].HeapIndex = 0;
-        SortDown(nodes[0]);
-        nodes[nodeCount] = null;
-        return firstNode;
+        // Get first object
+        T firstObject = objects[0];
+        objectCount--;
+        // Set new first object as last and sort it down
+        objects[0] = objects[objectCount];
+        objects[0].HeapIndex = 0;
+        SortDown(objects[0]);
+        objects[objectCount] = null;
+        return firstObject;
     }
 
     /// <summary>
-    /// Check if array contains grid node.
+    /// Check if array contains object.
     /// </summary>
-    /// <param name="node">Grid node to check.</param>
-    /// <returns>Returns true if array contains grid node.</returns>
-    public bool Contains(GridNode node)
+    /// <param name="hObject">Object to check.</param>
+    /// <returns>Returns true if array contains object.</returns>
+    public bool Contains(T hObject)
     {
-        return Equals(nodes[node.HeapIndex], node);
+        return Equals(objects[hObject.HeapIndex], hObject);
     }
 
     /// <summary>
-    /// Update node priority position.
+    /// Update object priority position.
     /// </summary>
-    /// <param name="node">Grid node to update.</param>
-    public void UpdateNode(GridNode node)
+    /// <param name="hObject">Object to update.</param>
+    public void UpdateObject(T hObject)
     {
-        SortUp(node);
+        SortUp(hObject);
     }
 
     /// <summary>
-    /// Clear array of all open grid nodes.
+    /// Clear array of all open objects.
     /// </summary>
     public void Clear()
     {
-        if(nodeCount > 0)
+        if(objectCount > 0)
         {
-            for (int i = 0; i < nodeCount; i++)
+            for (int i = 0; i < objectCount; i++)
             {
-                nodes[i] = null;
+                objects[i] = null;
             }
-            nodeCount = 0;
+            objectCount = 0;
         }
     }
 
-    private void SortUp(GridNode node)
+    private void SortUp(T hObject)
     {
-        // Get parent node index
-        int parentIndex = (node.HeapIndex - 1) / 2;
+        // Get parent object index
+        int parentIndex = (hObject.HeapIndex - 1) / 2;
         while (true)
         {
-            // Check if node score is lower and swap it (up) with parent node
-            GridNode parentNode = nodes[parentIndex];
-            if(node.CompareTo(parentNode) > 0)
+            // Check if object score is lower and swap it (up) with parent object
+            T parentObject = objects[parentIndex];
+            if(hObject.CompareTo(parentObject) > 0)
             {
-                Swap(node, parentNode);
+                Swap(hObject, parentObject);
             }
             else
             {
                 break;
             }
 
-            // Get new parent node index
-            parentIndex = (node.HeapIndex - 1) / 2;
+            // Get new parent object index
+            parentIndex = (hObject.HeapIndex - 1) / 2;
         }
     }
 
-    private void SortDown(GridNode node)
+    private void SortDown(T hObject)
     {
         while (true)
         {
-            // Get node child index on left and right
-            int childIndexLeft = node.HeapIndex * 2 + 1;
-            int childIndexRight = node.HeapIndex * 2 + 2;
+            // Get object child index on left and right
+            int childIndexLeft = hObject.HeapIndex * 2 + 1;
+            int childIndexRight = hObject.HeapIndex * 2 + 2;
             int swapIndex;
 
-            // Check if node has children
-            if(childIndexLeft < nodeCount)
+            // Check if object has children
+            if(childIndexLeft < objectCount)
             {
                 swapIndex = childIndexLeft;
 
-                if(childIndexRight < nodeCount)
+                if(childIndexRight < objectCount)
                 {
-                    if(nodes[childIndexLeft].CompareTo(nodes[childIndexRight]) < 0)
+                    if(objects[childIndexLeft].CompareTo(objects[childIndexRight]) < 0)
                     {
                         swapIndex = childIndexRight;
                     }
                 }
 
-                // Check if node score is bigger and swap it (down) with child node
-                if (node.CompareTo(nodes[swapIndex]) < 0)
+                // Check if object score is bigger and swap it (down) with child object
+                if (hObject.CompareTo(objects[swapIndex]) < 0)
                 {
-                    Swap(node, nodes[swapIndex]);
+                    Swap(hObject, objects[swapIndex]);
                 }
                 else
                 {
@@ -140,14 +140,14 @@ public class HeapMin
         }
     }
 
-    private void Swap(GridNode childNode, GridNode parentNode)
+    private void Swap(T childObject, T parentObject)
     {
-        // Swap nodes in array
-        nodes[childNode.HeapIndex] = parentNode;
-        nodes[parentNode.HeapIndex] = childNode;
-        // Swap heap index of nodes
-        int tempIndex = childNode.HeapIndex;
-        childNode.HeapIndex = parentNode.HeapIndex;
-        parentNode.HeapIndex = tempIndex;
+        // Swap objects in array
+        objects[childObject.HeapIndex] = parentObject;
+        objects[parentObject.HeapIndex] = childObject;
+        // Swap heap index of objects
+        int tempIndex = childObject.HeapIndex;
+        childObject.HeapIndex = parentObject.HeapIndex;
+        parentObject.HeapIndex = tempIndex;
     }
 }
